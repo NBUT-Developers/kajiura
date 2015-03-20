@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
+
+    <title>kajiura API Tester</title>
+    <link href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://bootswatch.com/journal/bootstrap.min.css" rel="stylesheet">
+    <link href="//libs.cncdn.cn/codemirror/4.1.0/codemirror.css" rel="stylesheet">
+    <link href="//libs.cncdn.cn/codemirror/4.1.0/package/theme/monokai.css" rel="stylesheet">
+    <link href="/sweetalert/sweet-alert.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Kajiura</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a>
+                    </li>
+                    <li><a target="_blank" href="http://gitlab.widget-inc.com/xadillax/kajiura">GitLab</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="starter-template">
+            <h1>Yuki Kajiura</h1>
+            <div class="well">
+                <form style="text-align: left;">
+                    <div class="form-group">
+                        <label for="conn">Host:Port</label>
+                        <input type="text" class="form-control" id="conn" placeholder="127.0.0.1:3721...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="router">Router</label>
+                        <input type="text" class="form-control" id="router" placeholder="Router...">
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="message">JSON Message</label>
+                            <textarea class="form-control" id="message" rows="5"></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Result</label>
+                            <pre class="result-pre">
+                            </pre>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://libs.useso.com/js/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//libs.cncdn.cn/codemirror/4.1.0/codemirror.min.js"></script>
+    <script src="//libs.cncdn.cn/codemirror/4.1.0/package/mode/javascript/javascript.js"></script>
+    <script src="//libs.cncdn.cn/codemirror/4.1.0/package/keymap/vim.js"></script>
+    <script src="//libs.cncdn.cn/store.js/1.3.14/store.min.js"></script>
+    <script src="/sweetalert/sweet-alert.min.js"></script>
+    <script src="/fbbkJSON.js"></script>
+    <script>
+        var codeMirror;
+        function sendMessage() {
+            try {
+                var msg = fJSON.parse(codeMirror.getValue().trim());
+                codeMirror.setValue(JSON.stringify(msg, true, 2));
+            } catch (e) {
+                swal({
+                    title: "Error!",
+                    text: "Invalid JSON message: " + e.message,
+                    type: "error",
+                    confirmButtonText: "OK"
+                });
+                return;
+            }
+            var conn = $("#conn").val();
+            var router = $("#router").val();
+
+            store.set("kajiura$conn", conn);
+            store.set("kajiura$router", router);
+            store.set("kajiura$message", JSON.stringify(msg, true, 2));
+
+            $(".result-pre").text("Submitting...");
+
+            $.post("/api", {
+                data: msg,
+                conn: conn,
+                router: router
+            }, function(json) {
+                $(".result-pre").text(JSON.stringify(json, true, 2));
+            });
+        }
+
+        $(function() {
+            $("#conn").val(store.get("kajiura$conn"));
+            $("#message").val(store.get("kajiura$message"));
+            $("#router").val(store.get("kajiura$router"));
+
+            codeMirror = CodeMirror.fromTextArea(document.getElementById("message"), {
+                theme: "monokai",
+                lineWrapping: true,
+                lineNumbers: true,
+                mode: "application/ld+json"
+            });
+
+            $("form").submit(function() {
+                sendMessage();
+                return false;
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+body {
+    padding-top: 50px;
+}
+
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.result-pre {
+    height: 300px;
+    background: #fff;
+    color: #ff0099;
+}
+
