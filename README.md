@@ -1,17 +1,6 @@
-# Ex[frame]ss
+# Kajiura
 
-A framework for Express.js!
+Clone it and edit `config/server.js`, the `port` section.
 
-## Controller
+Run `$ npm install` and then run `$ node kajiura.js`.
 
-You can create your controller under `controller` folder. The filename should be `controllernameController`. You can use
-`helper.common.getController("controllername")` to get the controller.
-
-And you can define your own router under `router` folder. You can name the filename any name. And in the router file, you
-have to write down a get object and a post object like:
-
-```javascript
-exports.get = {
-    "routerName"    : someController.oneFunction
-};
-```
