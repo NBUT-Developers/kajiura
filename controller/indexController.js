@@ -31,13 +31,15 @@ exports.api = function(req, resp) {
             if(!router) throw new Error("Please give a router.");
             var pos = router.indexOf(".");
             if(-1 === pos) throw new Error("Bad router.");
-            router = [ router.substr(0, pos), router.substr(pos + 1) ];
+            router = router.split(".");
         } catch(e) {
             illyria.close();
             return resp.send({ status: false, msg: e.message });
         }
 
-        illyria.send(router[0], router[1], json, function(err, data) {
+        var routerMethod = router.pop();
+        var routerModule = router.join(".");
+        illyria.send(routerModule, routerMethod, json, function(err, data) {
             illyria.close();
 
             if(err) {
