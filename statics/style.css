@@ -1,5 +1,10 @@
 body {
     padding-top: 50px;
+    background: url("/konachan.jpg") no-repeat center 10px;
+}
+
+.container {
+    opacity: .7;
 }
 
 .starter-template {
@@ -11,5 +16,27 @@ body {
     height: 300px;
     background: #fff;
     color: #ff0099;
+}
+
+.bottom {
+    color: #fff;
+    background: #ff7800;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.bottom p {
+    margin-bottom: 3px;
+}
+
+.mucplay {
+    position: fixed;
+    bottom: 15px;
+    right: 35px;
+    width: 160px;
 }
 
