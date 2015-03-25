@@ -17,7 +17,7 @@ function initializeLogger(environment) {
         replaceConsole: true
     });
 
-    var logger = log4js.getLogger("Remilia API Tester");
+    var logger = log4js.getLogger("KAJIURA");
 
     if(environment === "development") {
         logger.setLevel("TRACE");

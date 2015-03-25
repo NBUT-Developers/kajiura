@@ -53,7 +53,7 @@ async.waterfall([
     }
 
     http.createServer(app).listen(app.get("port"), function() {
-        config.logger.info("API Tester server started at 0.0.0.0:" + app.get("port") + ".");
+        config.logger.info("Kajiura started at 0.0.0.0:" + app.get("port") + ".");
     });
 });
 
