@@ -35,6 +35,9 @@ async.waterfall([
         app.use(app.router);
         app.use(express.static(path.join(__dirname, "/statics")));
 
+        var ejs = require("ejs");
+        ejs.__express = require("./lib/ejs").__express;
+
         callback();
     },
 
