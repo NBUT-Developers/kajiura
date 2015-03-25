@@ -25,9 +25,10 @@ exports.api = function(req, resp) {
 
     illyria.connect(function() {
         try {
-            if(!json || typeof json !== "object") {
+            if(json && typeof json === "string") {
                 json = fJSON.parse(json);
             }
+
             if(!router) throw new Error("Please give a router.");
             var pos = router.indexOf(".");
             if(-1 === pos) throw new Error("Bad router.");

@@ -107,6 +107,7 @@
 
             $(".result-pre").text("Submitting...");
 
+            msg = JSON.stringify(msg);
             $.post("/api", {
                 data: msg,
                 conn: conn,
